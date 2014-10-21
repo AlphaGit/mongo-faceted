@@ -9,7 +9,8 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "mongoose": "~3.8.16"
+    "mongoose": "~3.8.16",
+    "async": "~0.9.0"
   },
   "devDependencies": {
     "node-debug": "~0.1.0"

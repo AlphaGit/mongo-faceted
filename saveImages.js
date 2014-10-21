@@ -1,32 +1,38 @@
+function getImageObject(ImageModel, h, w, name, tags) {
+  return new ImageModel({
+    height: h,
+    width: w,
+    name: name,
+    tags: tags
+  });
+};
+
 var databaseConnection = require('./databaseConnection');
 databaseConnection.initDbConnection(function(mongoose) {
   var ImageModel = require('./ImageModel')(mongoose);
 
-  console.log('Instantiating images');
-  var image1 = new ImageModel({
-    height: 100,
-    width: 100,
-    name: 'JDAvatar.png',
-    tags: ['JD', 'Avatar', 'person', 'face', 'color']
+  console.log('Removing old images');
+  ImageModel.collection.remove(function(err) {
+    if (err) console.error('Error removing images', err);
   });
 
-  var image2 = new ImageModel({
-    height: 1080,
-    width: 1920,
-    name: 'background.png',
-    tags: ['background', 'color', 'hd', 'big', 'landscape']
-  });
+  console.log('Instantiating images');
+  var imageGenerator = getImageObject.bind(this, ImageModel);
+
+  var images = [];
+  images.push(imageGenerator(100, 100,'JDAvatar.png',['JD', 'Avatar', 'person', 'face', 'color']));
+  images.push(imageGenerator(100, 100, 'Another100.png', ['person', 'square']));
+  images.push(imageGenerator(1090, 1920, 'background.png', ['background', 'color', 'hd', 'big', 'landscape']));
+  images.push(imageGenerator(200, 200, 'PersonTagOnly.png', ['person']));
 
   console.log('Saving images');
-  image1.save(function(err1) {
-    if (err1) return console.error('error saving image 1', err1);
+  ImageModel.create(images, function(err) {
+    if (err) {
+      console.error('Error occurred', err);
+    } else {
+      console.info('Images saved.');
+    }
 
-    console.info('Saved image 1');
-    image2.save(function(err2) {
-      if (err2) return console.error('error saving image 2', err2);
-
-      console.info('Saved image 2');
-      process.exit(0);
-    });
-  });
+    process.exit(0);
+  })
 }); // initDbConnection

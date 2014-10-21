@@ -17,6 +17,7 @@ function facetedSearch(ImageModel, filters, callback) {
 
 /******************************************************************************/
 
+var async = require('async');
 var databaseConnection = require('./databaseConnection');
 databaseConnection.initDbConnection(function(mongoose) {
   var ImageModel = require('./ImageModel')(mongoose);
@@ -25,11 +26,28 @@ databaseConnection.initDbConnection(function(mongoose) {
     console.log('Total results:', count);
   });
 
-  var facetedWithImage = facetedSearch.bind(this, ImageModel);
-  facetedWithImage({ tags: ['person'] }, function(err, results) {
-    if (err) return console.error('Error searching', err);
+  var showResults = function(filter, cb) {
+    facetedSearch(ImageModel, filter, function(err, results) {
+      if (err) return cb(err);
 
-    console.log('Searching by tags: ', results);
-    process.exit(0);
-  });
+      console.log('Searching by ', filter, results);
+      cb();
+    });
+  }
+
+
+  async.waterfall([
+      function (cb) {
+        showResults({ height: 100 }, cb);
+      },
+      function (cb) {
+        showResults({ width: 1920 }, cb);
+      },
+      function (cb) {
+        showResults({ tags: ['person']}, cb);
+      }
+    ], function(err) {
+      if (err) console.error('Error searching: ', err);
+      process.exit(0);
+    });
 }); // initDbConnection()
