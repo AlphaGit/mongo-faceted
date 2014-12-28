@@ -13,6 +13,11 @@ databaseConnection.initDbConnection(function(mongoose) {
 
       console.log('Searching by', filter, results.length, 'results.');
       if (showResults) { console.log(results); }
+
+      if (results.facets) {
+        console.log("Facets:", results.facets);
+      }
+
       cb(null);
     });
   }
@@ -25,7 +30,7 @@ databaseConnection.initDbConnection(function(mongoose) {
         showResults({ width: 1920 }, false, cb);
       },
       function (cb) {
-        showResults({ tags: ['person'] }, false, cb);
+        showResults({ tags: ['person'] }, true, cb);
       }
     ], function(err) {
       if (err) console.error('Error searching: ', err);

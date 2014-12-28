@@ -6,26 +6,39 @@ module.exports = function(mongoose) {
     tags: [String]
   });
 
-  ImageSchema.statics.searchFacets = function(searchParams, cb) {
+  ImageSchema.statics.searchFacets = function(filter, cb) {
     searchParams = searchParams || {};
     cb = cb || function() {};
 
-    var search = this.find();
-    if (searchParams.tags)
-      search = search.find({ tags: { $in: searchParams.tags } });
+    var searchParams = {};
+    if (filter.tags) searchParams.tags = { $in: filter.tags };
+    if (filter.height) searchParams.height = filter.height;
+    if (filter.width) searchParams.width = filter.width;
+    if (filter.name) searchParams.name = new Regex(filter.name);
 
-    if (searchParams.height)
-      search = search.find({ height: searchParams.height });
+    ImageModel.find(searchParams, function (error, resultDocs) {
+      if (error) { return cb(error, resultDocs); }
 
-    if (searchParams.width)
-      search = search.find({ width: searchParams.width });
-
-    if (searchParams.name)
-      search = search.find({ name: new Regex(searchParams.name) });
-
-    search.exec(cb);
+      ImageModel.aggregate([
+        { $match: searchParams },
+        { $unwind: '$tags' },
+        { $group: {
+            _id: null,
+            height: { $addToSet: "$height" },
+            width: { $addToSet: "$width" },
+            name: { $addToSet: "$name" },
+            tags: { $addToSet: "$tags" }
+          }
+        }
+      ], function (error, aggregationDocs) {
+        resultDocs.facets = aggregationDocs;
+        cb(null, resultDocs);
+      })
+    });
   };
 
-  return mongoose.model('Image', ImageSchema);
+  var ImageModel = mongoose.model('Image', ImageSchema);
+
+  return ImageModel;
 };
 
