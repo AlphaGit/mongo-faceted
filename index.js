@@ -1,22 +1,3 @@
-function facetedSearch(ImageModel, filters, callback) {
-  var search = ImageModel.find();
-  if (filters.tags)
-    search = search.find({ tags: filters.tags });
-
-  if (filters.height)
-    search = search.find({ height: filters.height });
-
-  if (filters.width)
-    search = search.find({ width: filters.width });
-
-  if (filters.name)
-    search = search.find({ name: new Regex(filters.name) });
-
-  search.exec(callback);
-};
-
-/******************************************************************************/
-
 var async = require('async');
 var databaseConnection = require('./databaseConnection');
 databaseConnection.initDbConnection(function(mongoose) {
@@ -27,7 +8,7 @@ databaseConnection.initDbConnection(function(mongoose) {
   });
 
   var showResults = function(filter, showResults, cb) {
-    facetedSearch(ImageModel, filter, function(err, results) {
+    ImageModel.searchFacets(filter, function(err, results) {
       if (err) return cb(err);
 
       console.log('Searching by', filter, results.length, 'results.');
@@ -35,7 +16,6 @@ databaseConnection.initDbConnection(function(mongoose) {
       cb(null);
     });
   }
-
 
   async.waterfall([
       function (cb) {
@@ -45,8 +25,7 @@ databaseConnection.initDbConnection(function(mongoose) {
         showResults({ width: 1920 }, false, cb);
       },
       function (cb) {
-        // { tags: ['e1', 'e2'] } matches whole array for exact contents
-        showResults({ tags: ['person'] }, true, cb);
+        showResults({ tags: ['person'] }, false, cb);
       }
     ], function(err) {
       if (err) console.error('Error searching: ', err);
