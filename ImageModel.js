@@ -6,7 +6,7 @@ module.exports = function(mongoose) {
     tags: [String]
   });
 
-  ImageSchema.statics.searchFacets = function(filter, cb) {
+  ImageSchema.statics.searchWithFacets = function(filter, cb) {
     searchParams = searchParams || {};
     cb = cb || function() {};
 
@@ -31,7 +31,8 @@ module.exports = function(mongoose) {
           }
         }
       ], function (error, aggregationDocs) {
-        resultDocs.facets = aggregationDocs;
+        delete aggregationDocs[0]._id;
+        resultDocs.facets = aggregationDocs[0];
         cb(null, resultDocs);
       })
     });

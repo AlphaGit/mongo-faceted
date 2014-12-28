@@ -8,15 +8,13 @@ databaseConnection.initDbConnection(function(mongoose) {
   });
 
   var showResults = function(filter, showResults, cb) {
-    ImageModel.searchFacets(filter, function(err, results) {
+    ImageModel.searchWithFacets(filter, function(err, results) {
       if (err) return cb(err);
 
       console.log('Searching by', filter, results.length, 'results.');
       if (showResults) { console.log(results); }
 
-      if (results.facets) {
-        console.log("Facets:", results.facets);
-      }
+      console.log('----------------------------------------------------');
 
       cb(null);
     });
@@ -24,10 +22,10 @@ databaseConnection.initDbConnection(function(mongoose) {
 
   async.waterfall([
       function (cb) {
-        showResults({ height: 100 }, false, cb);
+        showResults({ height: 100 }, true, cb);
       },
       function (cb) {
-        showResults({ width: 1920 }, false, cb);
+        showResults({ width: 1920 }, true, cb);
       },
       function (cb) {
         showResults({ tags: ['person'] }, true, cb);
