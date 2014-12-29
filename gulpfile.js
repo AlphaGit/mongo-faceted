@@ -15,7 +15,7 @@ gulp.task('mocha', function() {
     .on('error', gutil.log);
 });
 
-gulp.task('watch-mocha', function() {
+gulp.task('watch', function() {
   gulp.watch([TEST_SRC_FILES, LIB_SRC_FILES], ['lint', 'jscs', 'mocha']);
 });
 
@@ -23,10 +23,12 @@ gulp.task('lint', function() {
   gulp.src(LIB_SRC_FILES)
     .pipe(jshint())
     .pipe(jshint.reporter('cool-reporter'))
-    .pipe(jshint.reporter('fail'));
+    .pipe(jshint.reporter('fail'))
+    .on('error', gutil.log);
 });
 
 gulp.task('jscs', function() {
   gulp.src(LIB_SRC_FILES)
-    .pipe(jscs());
+    .pipe(jscs())
+    .on('error', function(error) { gutil.log(error.message); });
 });

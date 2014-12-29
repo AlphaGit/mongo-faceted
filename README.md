@@ -12,4 +12,4 @@ Creating faceted searches in MongoDB.
 
 Or, if you're into watching your code as it grows:
 
-    gulp watch-mocha
+    gulp watch
