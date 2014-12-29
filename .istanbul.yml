@@ -1,0 +1,4 @@
+instrumentation:
+  embed-source: true
+  preserve-comments: true
+  include-all-sources: true
