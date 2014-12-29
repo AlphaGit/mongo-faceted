@@ -1,5 +1,26 @@
+build_image: shippableimages/ubuntu1404_nodejs
+
 language: node_js
-node_js:
-  - 0.10.35
+
+env:
+  # Code climate repo token
+  - secure: n2My+HzXQTUEwYZh1Wf0YUhDPYonPDeS2OJF5uRNTxMSSy8MbubOGP35DbuJzvGLzgTQ+ZngbenkZkLHFa0bSolTTcoYnkJo9TPCy80U7lor2dSvJI8ynYv6pGA+p/0UL1Basctc205cGnQ14OW530d3L9huWrdB+rkMQUMG11/ivmKdNhfV81TZi3URe8eRpLgY4iNqOsnFKf4JEY3QHYRDJVgMD8j5jqwdrN8D0rtsUzo4oGw0G0D6exv+wl+H7KESOHFWIZgnH5kwMBaqS9PNZvcboyTWwGbIZpxhS8j+G8khKSPPMceg7VZPVb4i9a3rBiedZp3VMobrmWnGTg==
+
 services:
   - mongodb
+
+node_js:
+  - 0.10.35
+
+before_script:
+  - npm install -g istanbul codeclimate-test-reporter mocha
+  - npm install
+
+script:
+  # Linux:
+  - istanbul cover _mocha  -- -R spec test/**/*
+  # Windows:
+  #- istanbul cover node_modules/mocha/bin/_mocha  -- -R spec test/**/*
+
+after_success:
+  - cat coverage/lcov.info | codeclimate

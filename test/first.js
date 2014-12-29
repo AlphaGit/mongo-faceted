@@ -1,11 +1,8 @@
 var should = require('should');
+var db = require('../databaseConnection');
 
 describe('test mocha', function() {
-  it('should do something', function() {
-    true.should.be.true;
-  });
-
-  it('should do something else', function() {
-    (1).should.be.a.Number;
+  it('should have a initDbConnection method defined', function() {
+    db.initDbConnection.should.be.defined;
   });
 });
