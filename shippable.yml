@@ -14,6 +14,7 @@ node_js:
 
 before_script:
   - npm install -g istanbul codeclimate-test-reporter mocha
+  - npm install
 
 script:
   - ls -R
