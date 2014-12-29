@@ -16,7 +16,10 @@ before_script:
   - npm install -g istanbul codeclimate-test-reporter
 
 script:
-  - istanbul cover node_modules/mocha/bin/_mocha  -- -R spec test/**/*
+  # Linux:
+  - istanbul cover _mocha  -- -R spec test/**/*
+  # Windows:
+  #- istanbul cover node_modules/mocha/bin/_mocha  -- -R spec test/**/*
 
 after_success:
   - cat coverage/lcov.info | codeclimate
