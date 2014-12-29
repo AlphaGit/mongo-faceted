@@ -20,7 +20,8 @@
     "gulp-util": "^3.0.1",
     "should": "^4.4.2",
     "cool-reporter": "^0.1.51",
-    "gulp-jshint": "^1.9.0"
+    "gulp-jshint": "^1.9.0",
+    "gulp-notify": "^2.1.0"
   },
   "repository": {
     "type": "git",
