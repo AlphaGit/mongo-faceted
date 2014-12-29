@@ -11,7 +11,7 @@ node_js:
   - 0.10.35
 
 before_script:
-  - npm install -g istanbul
+  - npm install -g istanbul codeclimate-test-reporter
 
 script:
   - istanbul cover node_modules/.bin/_mocha  -- -R spec test/**/*
