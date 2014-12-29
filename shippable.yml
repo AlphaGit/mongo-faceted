@@ -16,6 +16,7 @@ before_script:
   - npm install -g istanbul codeclimate-test-reporter
 
 script:
+  - ls -R
   # Linux:
   - istanbul cover node_modules/.bin/_mocha  -- -R spec test/**/*
   # Windows:
