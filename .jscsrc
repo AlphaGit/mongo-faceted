@@ -6,7 +6,7 @@
   "requireParenthesesAroundIIFE": true,
   "requireSpacesInConditionalExpression": true,
   "requireSpacesInFunction": { "beforeOpeningCurlyBrace": true },
-  "disallowSpacesInFunction": { "beforeOpeningRoundBrace": true },
+  "requireSpacesInAnonymousFunctionExpression": { "beforeOpeningRoundBrace": true, "beforeOpeningCurlyBrace": true },
   "disallowSpacesInCallExpression": true,
   "disallowMultipleVarDecl": "exceptUndefined",
   "requireBlocksOnNewline": 1,
