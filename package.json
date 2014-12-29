@@ -4,7 +4,7 @@
   "description": "Using facets with MongoDB",
   "main": "index.js",
   "scripts": {
-    "test": "gulp mocha"
+    "test": "gulp"
   },
   "author": "Alpha <alphagma@gmail.com>",
   "license": "MIT",

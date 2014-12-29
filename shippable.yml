@@ -13,10 +13,13 @@ node_js:
   - 0.10.35
 
 before_script:
-  - npm install -g istanbul codeclimate-test-reporter mocha
+  - npm install -g istanbul codeclimate-test-reporter mocha gulp
   - npm install
 
 script:
+  - gulp lint
+  - gulp jscs
+
   # Linux:
   - istanbul cover _mocha  -- -R spec test/**/*
   # Windows:
