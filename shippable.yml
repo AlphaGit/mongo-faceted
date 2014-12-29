@@ -16,7 +16,7 @@ before_script:
   - npm install -g istanbul codeclimate-test-reporter
 
 script:
-  - istanbul cover --hook-run-in-context node_modules/.bin/_mocha  -- -R spec test/**/*
+  - istanbul cover node_modules/mocha/bin/_mocha  -- -R spec test/**/*
 
 after_success:
   - cat coverage/lcov.info | codeclimate
