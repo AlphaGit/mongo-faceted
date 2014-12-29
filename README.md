@@ -8,7 +8,7 @@ Creating faceted searches in MongoDB.
 
 ## To test
 
-    gulp mocha
+    gulp
 
 Or, if you're into watching your code as it grows:
 
