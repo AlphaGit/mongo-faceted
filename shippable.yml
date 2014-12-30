@@ -12,7 +12,6 @@ node_js:
 
 before_script:
   - npm install -g istanbul codeclimate-test-reporter mocha gulp
-  - npm install
 
 script:
   - gulp lint
