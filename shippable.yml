@@ -1,5 +1,3 @@
-build_image: shippableimages/ubuntu1404_nodejs
-
 language: node_js
 
 env:
