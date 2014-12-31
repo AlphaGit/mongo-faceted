@@ -14,8 +14,8 @@ try {
     arrayOfStringsField: [String]
   });
 
-  mongoFacets(ExampleSchema, ExampleModel);
-
+  mongoFacets('Example', ExampleSchema);
+  
   ExampleModel = mongoose.model('Example', ExampleSchema);
 }
 

@@ -47,5 +47,18 @@ describe('mongo-facets', function() {
         done();
       });
     });
+
+    it('should return the regular results when calling searchWithFacets', function(done) {
+      ExampleModel.searchWithFacets({}, function(error, results) {
+        should.not.exist(error);
+        should.exist(results);
+        results.length.should.equal(3);
+        results[0].toObject().should.containEql(testData[0]);
+        results[1].toObject().should.containEql(testData[1]);
+        results[2].toObject().should.containEql(testData[2]);
+
+        done();
+      });
+    });
   });
 });
