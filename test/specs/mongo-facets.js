@@ -17,7 +17,7 @@ describe('mongo-facets', function() {
     var testData = [{
       stringField: 'One',
       numberField: 1,
-      arrayOfStringsField: ['Uno', 'Eins', 'Ras']
+      arrayOfStringsField: ['Uno', 'Eins', 'Raz']
     }, {
       stringField: 'Two',
       numberField: 2,
@@ -89,16 +89,118 @@ describe('mongo-facets', function() {
         });
       });
 
-      it('should return a subset of values for other filters', function(done) {
+      it('should return a subset of values for a single result', function(done) {
         ExampleModel.searchWithFacets({ numberField: 1 }, function(error, results) {
           should.exist(results.facets.stringField);
           results.facets.stringField.should.be.an.Array;
-                    
+
           results.facets.stringField.should.eql(['One']);
 
           done();
         });
-      })
+      });
+
+      it('should return a subset of values for other filters', function(done) {
+        var filter = { $or: [{ numberField: 1 }, { numberField: 2 }] };
+        ExampleModel.searchWithFacets(filter, function(error, results) {
+          should.exist(results.facets.stringField);
+          results.facets.stringField.should.be.an.Array;
+
+          var expectedStringFacets = _.sortBy(['One', 'Two']);
+          var actualStringFacets = _.sortBy(results.facets.stringField);
+
+          actualStringFacets.should.eql(expectedStringFacets);
+
+          done();
+        });
+      });
+    });
+
+    describe('Number facets', function() {
+      it('should return all values if no filter was passed', function(done) {
+        ExampleModel.searchWithFacets({}, function(error, results) {
+          should.exist(results.facets.numberField);
+          results.facets.numberField.should.be.an.Array;
+
+          var expectedNumberFacets = _.sortBy([1, 2, 3]);
+          var actualNumberFacets = _.sortBy(results.facets.numberField);
+
+          actualNumberFacets.should.eql(expectedNumberFacets);
+
+          done();
+        });
+      });
+
+      it('should return a subset of values for a single result', function(done) {
+        ExampleModel.searchWithFacets({ stringField: 'One' }, function(error, results) {
+          should.exist(results.facets.numberField);
+          results.facets.numberField.should.be.an.Array;
+
+          results.facets.numberField.should.eql([1]);
+
+          done();
+        });
+      });
+
+      it('should return a subset of values for other filters', function(done) {
+        var filter = { $or: [{ stringField: 'One' }, { stringField: 'Two' }] };
+        ExampleModel.searchWithFacets(filter, function(error, results) {
+          should.exist(results.facets.numberField);
+          results.facets.numberField.should.be.an.Array;
+
+          var expectedNumberFacets = _.sortBy([1, 2]);
+          var actualNumberFacets = _.sortBy(results.facets.numberField);
+
+          actualNumberFacets.should.eql(expectedNumberFacets);
+
+          done();
+        });
+      });
+    });
+
+    describe('Array facets', function() {
+      it('should return all values joined if no filter was passed', function(done) {
+        ExampleModel.searchWithFacets({}, function(error, results) {
+          should.exist(results.facets.arrayOfStringsField);
+          results.facets.arrayOfStringsField.should.be.an.Array;
+
+          var expectedArrayOfStringsFacets = _.sortBy(['Uno', 'Dos', 'Tres', 'Eins', 'Zwei', 'Drei', 'Raz', 'Dva', 'Tri']);
+          var actualArrayOfStringsFacets = _.sortBy(results.facets.arrayOfStringsField);
+
+          actualArrayOfStringsFacets.should.eql(expectedArrayOfStringsFacets);
+
+          done();
+        });
+      });
+
+      it('should return a subset of values for a single result', function(done) {
+        ExampleModel.searchWithFacets({ numberField: 1 }, function(error, results) {
+          should.exist(results.facets.arrayOfStringsField);
+          results.facets.arrayOfStringsField.should.be.an.Array;
+
+          var expectedArrayOfStringsFacets = _.sortBy(['Uno', 'Eins', 'Raz']);
+          var actualArrayOfStringsFacets = _.sortBy(results.facets.arrayOfStringsField);
+
+          actualArrayOfStringsFacets.should.eql(expectedArrayOfStringsFacets);
+
+          done();
+        });
+      });
+
+      it('should return a subset of values for other filters', function(done) {
+        var filter = { $or: [{ numberField: 1 }, { numberField: 2 }] };
+        ExampleModel.searchWithFacets(filter, function(error, results) {
+          should.exist(results.facets.arrayOfStringsField);
+          results.facets.arrayOfStringsField.should.be.an.Array;
+
+          var expectedArrayOfStringsFacets = _.sortBy(['Uno', 'Dos', 'Eins', 'Zwei', 'Raz', 'Dva']);
+          var actualArrayOfStringsFacets = _.sortBy(results.facets.arrayOfStringsField);
+
+          actualArrayOfStringsFacets.should.eql(expectedArrayOfStringsFacets);
+
+          done();
+        });
+      });
     });
   });
 });
