@@ -60,5 +60,45 @@ describe('mongo-facets', function() {
         done();
       });
     });
+
+    it('should also return facets for the search', function(done) {
+      ExampleModel.searchWithFacets({}, function(error, results) {
+        should.not.exist(error);
+        should.exist(results);
+        should.exist(results.facets);
+        should.exist(results.facets.stringField);
+        should.exist(results.facets.numberField);
+        should.exist(results.facets.arrayOfStringsField);
+
+        done();
+      });
+    });
+
+    describe('String facets', function() {
+      it('should return all values if no filter was passed', function(done) {
+        ExampleModel.searchWithFacets({}, function(error, results) {
+          should.exist(results.facets.stringField);
+          results.facets.stringField.should.be.an.Array;
+
+          var expectedStringFacets = _.sortBy(['One', 'Two', 'Three']);
+          var actualStringFacets = _.sortBy(results.facets.stringField);
+
+          actualStringFacets.should.eql(expectedStringFacets);
+
+          done();
+        });
+      });
+
+      it('should return a subset of values for other filters', function(done) {
+        ExampleModel.searchWithFacets({ numberField: 1 }, function(error, results) {
+          should.exist(results.facets.stringField);
+          results.facets.stringField.should.be.an.Array;
+                    
+          results.facets.stringField.should.eql(['One']);
+
+          done();
+        });
+      })
+    });
   });
 });
