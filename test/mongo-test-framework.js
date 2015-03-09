@@ -1,30 +1,30 @@
 var async = require('async');
-var should = require('should');
-var mongoose = require('mongoose');
+var mongo = require('mongodb').MongoClient;
 
 var TestFw = {};
 
 function initDbConnection(cb) {
-  mongoose.connect('mongodb://localhost:27017/faceted', function() {
-    cb();
-  });
+  mongo.connect('mongodb://localhost:27017/faceted', cb);
 }
 
 /********************************* HELPERS ***********************************/
 TestFw.beforeEachHook = function beforeEachHook(done) {
   async.waterfall([
     initDbConnection,
-    function(cb) {
-      mongoose.connection.db.dropDatabase(cb);
-    }
+    function(db, cb) {
+      TestFw._db = db;
+      db.dropDatabase(cb);
+    },
   ], function(err) {
     if (err) console.error(err);
-    done();
+    done(TestFw._db);
   });
 };
 
 TestFw.afterEachHook = function afterEachHook(done) {
-  mongoose.disconnect(done);
+  var db = TestFw._db;
+  delete TestFw._db;
+  db.close(done);
 };
 
 module.exports = TestFw;

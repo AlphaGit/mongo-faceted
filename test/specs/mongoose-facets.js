@@ -1,5 +1,5 @@
 var async = require('async');
-var TestFw = require('../test-framework');
+var TestFw = require('../mongoose-test-framework');
 var mongoose = require('mongoose');
 var ExampleModel = require('../example-model');
 var should = require('should');
