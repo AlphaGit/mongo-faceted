@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var mongoFacets = require('../lib/mongo-facets');
+var mongooseFacets = require('../lib/mongoose-facets');
 
 var ExampleModel;
 
@@ -14,8 +14,8 @@ try {
     arrayOfStringsField: [String]
   });
 
-  mongoFacets('Example', ExampleSchema);
-  
+  mongooseFacets('Example', ExampleSchema);
+
   ExampleModel = mongoose.model('Example', ExampleSchema);
 }
 
