@@ -12,8 +12,7 @@ describe('Mongo Testing Framework', function() {
   });
   afterEach(TestFw.afterEachHook);
 
-  // TODO fix -- test failing
-  it.skip('should drop all data present in the database', function(done) {
+  it('should drop all data present in the database', function(done) {
     var exampleDoc = {
       stringField: "Some example text",
       numberField: 1,
@@ -29,8 +28,7 @@ describe('Mongo Testing Framework', function() {
         exampleCollection = createdCollection;
         exampleCollection.insert(exampleDoc, cb);
       },
-      function(cb) {
-        debugger;
+      function(insertedDoc, cb) {
         exampleCollection.count(cb);
       },
       function(count, cb) {
@@ -40,7 +38,7 @@ describe('Mongo Testing Framework', function() {
       function(cb) {
         TestFw.afterEachHook(cb);
       },
-      function(cb) {
+      function(closeResult, cb) {
         TestFw.beforeEachHook(function(openedDb) {
           db = openedDb;
           cb();
