@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "mongoose": "~3.8.16",
-    "mongodb": "1.4.33",
+    "mongodb": "^1.4.33",
     "async": "^0.9.0",
     "lodash": "^2.4.1"
   },
