@@ -9,11 +9,11 @@ describe('mongoose-facets', function() {
   beforeEach(TestFw.beforeEachHook);
   afterEach(TestFw.afterEachHook);
 
-  it('should define a searchWithFacets function in the model', function() {
-    should.exist(ExampleModel.searchWithFacets);
+  it('should define a findWithFacets function in the model', function() {
+    should.exist(ExampleModel.findWithFacets);
   });
 
-  describe('searchWithFacets', function() {
+  describe('#findWithFacets', function() {
     var testData = [{
       stringField: 'One',
       numberField: 1,
@@ -48,8 +48,8 @@ describe('mongoose-facets', function() {
       });
     });
 
-    it('should return the regular results when calling searchWithFacets', function(done) {
-      ExampleModel.searchWithFacets({}, function(error, results) {
+    it('should return the regular results when calling findWithFacets', function(done) {
+      ExampleModel.findWithFacets({}, function(error, results) {
         should.not.exist(error);
         should.exist(results);
         results.length.should.equal(3);
@@ -62,7 +62,7 @@ describe('mongoose-facets', function() {
     });
 
     it('should also return facets for the search', function(done) {
-      ExampleModel.searchWithFacets({}, function(error, results) {
+      ExampleModel.findWithFacets({}, function(error, results) {
         should.not.exist(error);
         should.exist(results);
         should.exist(results.facets);
@@ -76,7 +76,7 @@ describe('mongoose-facets', function() {
 
     describe('String facets', function() {
       it('should return all values if no filter was passed', function(done) {
-        ExampleModel.searchWithFacets({}, function(error, results) {
+        ExampleModel.findWithFacets({}, function(error, results) {
           should.exist(results.facets.stringField);
           results.facets.stringField.should.be.an.Array;
 
@@ -90,7 +90,7 @@ describe('mongoose-facets', function() {
       });
 
       it('should return a subset of values for a single result', function(done) {
-        ExampleModel.searchWithFacets({ numberField: 1 }, function(error, results) {
+        ExampleModel.findWithFacets({ numberField: 1 }, function(error, results) {
           should.exist(results.facets.stringField);
           results.facets.stringField.should.be.an.Array;
 
@@ -102,7 +102,7 @@ describe('mongoose-facets', function() {
 
       it('should return a subset of values for other filters', function(done) {
         var filter = { $or: [{ numberField: 1 }, { numberField: 2 }] };
-        ExampleModel.searchWithFacets(filter, function(error, results) {
+        ExampleModel.findWithFacets(filter, function(error, results) {
           should.exist(results.facets.stringField);
           results.facets.stringField.should.be.an.Array;
 
@@ -118,7 +118,7 @@ describe('mongoose-facets', function() {
 
     describe('Number facets', function() {
       it('should return all values if no filter was passed', function(done) {
-        ExampleModel.searchWithFacets({}, function(error, results) {
+        ExampleModel.findWithFacets({}, function(error, results) {
           should.exist(results.facets.numberField);
           results.facets.numberField.should.be.an.Array;
 
@@ -132,7 +132,7 @@ describe('mongoose-facets', function() {
       });
 
       it('should return a subset of values for a single result', function(done) {
-        ExampleModel.searchWithFacets({ stringField: 'One' }, function(error, results) {
+        ExampleModel.findWithFacets({ stringField: 'One' }, function(error, results) {
           should.exist(results.facets.numberField);
           results.facets.numberField.should.be.an.Array;
 
@@ -144,7 +144,7 @@ describe('mongoose-facets', function() {
 
       it('should return a subset of values for other filters', function(done) {
         var filter = { $or: [{ stringField: 'One' }, { stringField: 'Two' }] };
-        ExampleModel.searchWithFacets(filter, function(error, results) {
+        ExampleModel.findWithFacets(filter, function(error, results) {
           should.exist(results.facets.numberField);
           results.facets.numberField.should.be.an.Array;
 
@@ -160,7 +160,7 @@ describe('mongoose-facets', function() {
 
     describe('Array facets', function() {
       it('should return all values joined if no filter was passed', function(done) {
-        ExampleModel.searchWithFacets({}, function(error, results) {
+        ExampleModel.findWithFacets({}, function(error, results) {
           should.exist(results.facets.arrayOfStringsField);
           results.facets.arrayOfStringsField.should.be.an.Array;
 
@@ -174,7 +174,7 @@ describe('mongoose-facets', function() {
       });
 
       it('should return a subset of values for a single result', function(done) {
-        ExampleModel.searchWithFacets({ numberField: 1 }, function(error, results) {
+        ExampleModel.findWithFacets({ numberField: 1 }, function(error, results) {
           should.exist(results.facets.arrayOfStringsField);
           results.facets.arrayOfStringsField.should.be.an.Array;
 
@@ -189,7 +189,7 @@ describe('mongoose-facets', function() {
 
       it('should return a subset of values for other filters', function(done) {
         var filter = { $or: [{ numberField: 1 }, { numberField: 2 }] };
-        ExampleModel.searchWithFacets(filter, function(error, results) {
+        ExampleModel.findWithFacets(filter, function(error, results) {
           should.exist(results.facets.arrayOfStringsField);
           results.facets.arrayOfStringsField.should.be.an.Array;
 
