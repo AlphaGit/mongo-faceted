@@ -2,7 +2,7 @@
   "name": "mongo-faceted",
   "version": "0.0.1",
   "description": "Using facets with MongoDB",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "gulp"
   },
