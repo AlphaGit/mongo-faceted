@@ -11,7 +11,7 @@
   "dependencies": {
     "mongodb": "^1.4.33",
     "async": "^0.9.0",
-    "lodash": "^2.4.1"
+    "lodash": "^2.4.1 || ^3.5.0"
   },
   "optionalDependencies": {
     "mongoose": "~3.8.16"
