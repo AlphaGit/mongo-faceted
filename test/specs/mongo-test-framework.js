@@ -1,6 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var TestFw = require('../mongo-test-framework');
 var async = require('async');
+var should = require('should');
 
 describe('Mongo Testing Framework', function() {
   var db = null;
@@ -62,6 +63,35 @@ describe('Mongo Testing Framework', function() {
       },
       function(collections, cb) {
         collections.length.should.equal(0);
+        cb();
+      }
+    ], done);
+  });
+
+  it('should be able to create and add documents into the db', function(done) {
+    var exampleDoc = {
+      stringField: "Some example text",
+      numberField: 1,
+      arrayOfStringsField: ["One", "Two", "Three"]
+    };
+
+    async.waterfall([
+      function(cb) {
+        db.createCollection('examples', cb);
+      },
+      function(exampleCollection, cb) {
+        exampleCollection.insert(exampleDoc, cb);
+      },
+      function(insertedDoc, cb) {
+        db.collection('examples', cb);
+      },
+      function(exampleCollection, cb) {
+        exampleCollection.find().toArray(cb);
+      },
+      function(results, cb) {
+        should.exist(results);
+        results.length.should.equal(1);
+        results[0].should.be.eql(exampleDoc);
         cb();
       }
     ], done);
