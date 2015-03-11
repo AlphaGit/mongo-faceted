@@ -9,10 +9,12 @@
   "author": "Alpha <alphagma@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "mongoose": "~3.8.16",
     "mongodb": "^1.4.33",
     "async": "^0.9.0",
     "lodash": "^2.4.1"
+  },
+  "optionalDependencies": {
+    "mongoose": "~3.8.16"
   },
   "devDependencies": {
     "node-debug": "~0.1.0",
