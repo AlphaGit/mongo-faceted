@@ -54,4 +54,16 @@ describe('Mongo Testing Framework', function() {
       }
     ], done);
   });
+
+  it('should not contain any collections to being with', function(done) {
+    async.waterfall([
+      function(cb) {
+        db.collections(cb);
+      },
+      function(collections, cb) {
+        collections.length.should.equal(0);
+        cb();
+      }
+    ], done);
+  });
 });
